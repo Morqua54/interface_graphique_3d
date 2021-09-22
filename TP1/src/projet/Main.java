@@ -3,10 +3,10 @@ package projet;
 import java.awt.BorderLayout;
 //import java.awt.Color;
 import java.awt.Dimension;
-// import java.awt.Graphics;
+import java.awt.Graphics;
 // import java.awt.Graphics2D;
 import java.awt.GridLayout;
-//import java.awt.Image;
+import java.awt.Image;
 // import java.awt.RenderingHints;
 // import java.awt.Shape;
 import java.awt.event.ActionEvent;
@@ -16,12 +16,13 @@ import java.awt.event.ActionListener;
 // import java.awt.geom.Line2D;
 // import java.awt.geom.Point2D;
 // import java.awt.geom.Rectangle2D;
-// import java.io.File;
-// import java.io.IOException;
+import java.io.File;
+import java.io.IOException;
+import java.awt.image.BufferedImage;
 // import java.util.Iterator;
 // import java.util.LinkedList;
 
-// import javax.imageio.ImageIO;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 //import javax.swing.JButton;
@@ -44,8 +45,8 @@ import javax.swing.SwingUtilities;
 
 //import gestionGraph.MesMouseMenus;
 //import gestionGraph.PopupVertexEdgeMenuMousePlugin;
-// import edu.uci.ics.jung.algorithms.layout.Layout;
-// import edu.uci.ics.jung.algorithms.layout.StaticLayout;
+import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.algorithms.layout.StaticLayout;
 // import edu.uci.ics.jung.graph.Graph;
 // import edu.uci.ics.jung.graph.SparseMultigraph;
 // import edu.uci.ics.jung.graph.util.Context;
@@ -78,7 +79,7 @@ public class Main {
     // private Factory<Route> edgeFactory; // Gestionnaire des arretes du graph
     // private VisualizationViewer<Carrefour, Route> vv; // Viewer du graph
     //private EditingModalGraphMouse gm; // Gestionnaire des evenements de la souris
-    //private Image imgFond; // Image de fond du graph
+    private Image imgFond; // Image de fond du graph
     // private float decalX, decalY; // Pour centrer le graph
     // private float scale; // Facteur d'agrandissement du graph
     // private Carrefour n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, n12, n13, n14, n15, n16, n17, n18, n19, n20, n21,
@@ -215,6 +216,14 @@ public class Main {
         frame.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         fermer = new JMenuItem("Fermer", new ImageIcon("images/fermer.jpg"));
         aide = new JMenuItem("Aide", new ImageIcon("images/aide.jpg"));
+        try {
+            //imgFond = ImageIO.read(new File("images/fond.jpg"));
+            BufferedImage myPicture = ImageIO.read(new File("images/fond.jpg"));
+            JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+            menu1.add(picLabel);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // reconstruire = new JButton("Reconstruire");
 
         // sliderNoeudRang = new JSlider(noeudRangMin, noeudRangMax, noeudRangInit);
@@ -300,9 +309,9 @@ public class Main {
 
             JPanel menu1_4 = new JPanel(new GridLayout(1, 1));
             {
-                ImageIcon imgIndications = new ImageIcon("images/indications.jpg");
-                JLabel l4 = new JLabel(imgIndications);
-                menu1_4.add(l4, BorderLayout.CENTER);
+                //ImageIcon imgIndications = new ImageIcon("images/indications.jpg");
+                //JLabel l4 = new JLabel(imgIndications);
+                //menu1_4.add(l4, BorderLayout.CENTER);
             }
             menu1.add(menu1_4);
         }
@@ -1089,7 +1098,7 @@ public class Main {
     //     placerNoeud(layout, n76, 187.266f * scale + decalX, 100.159f * scale + decalY);
     // }
 
-    // public void afficherLeGraphLimogesComplet() {
+     public void afficherLeGraphLimogesComplet() {
     //     layout.setSize(new Dimension(900, 700));
     //     vv = new VisualizationViewer<Carrefour, Route>(layout); // Gestionnaire d'affichage
     //     vv.setPreferredSize(new Dimension(950, 730));
@@ -1140,11 +1149,7 @@ public class Main {
 
     //     vv.getRenderContext().setLabelOffset(8);
 
-    //     try {
-    //         imgFond = ImageIO.read(new File("images/fond.jpg"));
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
+        
     //     // Personnalisation de l'affichage AVANT le reste :
     //     vv.addPreRenderPaintable(new VisualizationViewer.Paintable() {
     //         public void paint(Graphics g) {
@@ -1263,12 +1268,12 @@ public class Main {
     //     });
 
     //     vv.getRenderContext().setLabelOffset(8);
-
-    //     try {
-    //         imgFond = ImageIO.read(new File("images/fond.jpg"));
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
+        
+        // try {
+        //     imgFond = ImageIO.read(new File("images/fond.jpg"));
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
     //     // Personnalisation de l'affichage AVANT le reste :
     //     vv.addPreRenderPaintable(new VisualizationViewer.Paintable() {
     //         public void paint(Graphics g) {
@@ -1345,7 +1350,7 @@ public class Main {
     //     gm.remove(gm.getPopupEditingPlugin());
     //     gm.add(myPlugin);
     //     gm.setMode(ModalGraphMouse.Mode.TRANSFORMING); // Par defaut, on est en mode "déplacer"
-    // }
+     }
 
     // POINT D'ENTREE
     public static void main(String[] args) {
