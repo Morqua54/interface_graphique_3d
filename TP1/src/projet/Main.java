@@ -40,6 +40,9 @@ import javax.swing.SwingUtilities;
 // import javax.swing.event.ChangeListener;
 // import javax.vecmath.Vector2d;
 import javax.swing.border.Border;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+import java.io.File;
 
 // import org.apache.commons.collections15.Factory;
 // import org.apache.commons.collections15.Transformer;
@@ -384,6 +387,20 @@ public class Main {
         fermerImage.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 myPicture = null;
+                frame.repaint();
+            }
+        });
+
+        ouvrirImage.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser dialogue = new JFileChooser();
+                dialogue.showOpenDialog(null);
+                //System.out.println("Fichier choisi : " + dialogue.getSelectedFile());
+                try {
+                    myPicture = ImageIO.read(dialogue.getSelectedFile());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
                 frame.repaint();
             }
         });
