@@ -71,7 +71,7 @@ public class Main {
     // ATTRIBUTS
     private JFrame frame; // La fenêtre
     private JMenuBar menuBar; // Menu en haut horizontal
-    private JMenuItem fermer, aide;
+    private JMenuItem fermer, aide, ouvrir_pop_up, ouvrir_image, fermer_image, deplacer_image;
     // private JButton reconstruire;
     // private Graph<Carrefour, Route> g; // Le graph
     // private Layout<Carrefour, Route> layout; // Le calque contenant le graph
@@ -217,6 +217,10 @@ public class Main {
         frame.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         fermer = new JMenuItem("Fermer", new ImageIcon("images/fermer.jpg"));
         aide = new JMenuItem("Aide", new ImageIcon("images/aide.jpg"));
+        ouvrir_pop_up = new JMenuItem("ouvrir une pop up", new ImageIcon("images/fermer.jpg"));
+        ouvrir_image = new JMenuItem("ouvrir une image", new ImageIcon("images/fermer.jpg"));
+        fermer_image = new JMenuItem("fermer une image", new ImageIcon("images/fermer.jpg"));
+        deplacer_image = new JMenuItem("deplacer une image", new ImageIcon("images/fermer.jpg"));
 
         // reconstruire = new JButton("Reconstruire");
 
@@ -315,12 +319,16 @@ public class Main {
         {
             JMenu menuFichier = new JMenu("Fichier");
             {
+                menuFichier.add(ouvrir_image);
+                menuFichier.add(fermer_image);
+                menuFichier.add(deplacer_image);
                 menuFichier.add(fermer);
             }
             menuBar.add(menuFichier);
             JMenu menuEdition = new JMenu("A propos");
             {
                 menuEdition.add(aide);
+                menuEdition.add(ouvrir_pop_up);
             }
             menuBar.add(menuEdition);
         }
@@ -350,6 +358,12 @@ public class Main {
         aide.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame, "Contact :\n" + "Godé Vincent : vincent.gode@etu.unilim.fr");
+            }
+        });
+        
+        ouvrir_pop_up.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(frame, "Ceci est une pop up");
             }
         });
 
