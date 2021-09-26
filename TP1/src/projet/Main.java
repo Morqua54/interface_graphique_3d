@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
 // import javax.swing.event.ChangeEvent;
 // import javax.swing.event.ChangeListener;
 // import javax.vecmath.Vector2d;
+import javax.swing.border.Border;
 
 // import org.apache.commons.collections15.Factory;
 // import org.apache.commons.collections15.Transformer;
@@ -216,14 +217,7 @@ public class Main {
         frame.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         fermer = new JMenuItem("Fermer", new ImageIcon("images/fermer.jpg"));
         aide = new JMenuItem("Aide", new ImageIcon("images/aide.jpg"));
-        try {
-            //imgFond = ImageIO.read(new File("images/fond.jpg"));
-            BufferedImage myPicture = ImageIO.read(new File("images/fond.jpg"));
-            JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-            menu1.add(picLabel);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         // reconstruire = new JButton("Reconstruire");
 
         // sliderNoeudRang = new JSlider(noeudRangMin, noeudRangMax, noeudRangInit);
@@ -331,6 +325,17 @@ public class Main {
             menuBar.add(menuEdition);
         }
         frame.setJMenuBar(menuBar);
+
+        try {
+            //imgFond = ImageIO.read(new File("images/fond.jpg"));
+            //BufferedImage myPicture = ImageIO.read(new File("images/fond.jpg"));
+            BufferedImage myPicture = ImageIO.read(new File("images/test.jpg"));
+            JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+            //menu1.add(picLabel);
+            frame.add(picLabel, BorderLayout.CENTER);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void createController() {
