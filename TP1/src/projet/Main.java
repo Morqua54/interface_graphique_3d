@@ -71,7 +71,7 @@ public class Main {
     // ATTRIBUTS
     private JFrame frame; // La fenêtre
     private JMenuBar menuBar; // Menu en haut horizontal
-    private JMenuItem fermer, aide, ouvrir_pop_up, ouvrir_image, fermer_image, deplacer_image;
+    private JMenuItem fermer, aide, ouvrirPopUp, ouvrirImage, fermerImage, deplacerImage;
     // private JButton reconstruire;
     // private Graph<Carrefour, Route> g; // Le graph
     // private Layout<Carrefour, Route> layout; // Le calque contenant le graph
@@ -107,6 +107,8 @@ public class Main {
     // private int coefLongNouvelleRouteInit;
     // private JSlider sliderNoeudRang, sliderArreteRang, sliderCoefNoeudProche, sliderCoefLongNouvelleRoute; // Les
     //                                                                                                        // sliders
+    private JLabel picLabel;
+    private BufferedImage myPicture;
 
     // CONSTRUCTEUR
     public Main() {
@@ -217,10 +219,10 @@ public class Main {
         frame.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         fermer = new JMenuItem("Fermer", new ImageIcon("images/fermer.jpg"));
         aide = new JMenuItem("Aide", new ImageIcon("images/aide.jpg"));
-        ouvrir_pop_up = new JMenuItem("ouvrir une pop up", new ImageIcon("images/fermer.jpg"));
-        ouvrir_image = new JMenuItem("ouvrir une image", new ImageIcon("images/fermer.jpg"));
-        fermer_image = new JMenuItem("fermer une image", new ImageIcon("images/fermer.jpg"));
-        deplacer_image = new JMenuItem("deplacer une image", new ImageIcon("images/fermer.jpg"));
+        ouvrirPopUp = new JMenuItem("ouvrir une pop up", new ImageIcon("images/fermer.jpg"));
+        ouvrirImage = new JMenuItem("ouvrir une image", new ImageIcon("images/fermer.jpg"));
+        fermerImage = new JMenuItem("fermer une image", new ImageIcon("images/fermer.jpg"));
+        deplacerImage = new JMenuItem("deplacer une image", new ImageIcon("images/fermer.jpg"));
 
         // reconstruire = new JButton("Reconstruire");
 
@@ -319,16 +321,16 @@ public class Main {
         {
             JMenu menuFichier = new JMenu("Fichier");
             {
-                menuFichier.add(ouvrir_image);
-                menuFichier.add(fermer_image);
-                menuFichier.add(deplacer_image);
+                menuFichier.add(ouvrirImage);
+                menuFichier.add(fermerImage);
+                menuFichier.add(deplacerImage);
                 menuFichier.add(fermer);
             }
             menuBar.add(menuFichier);
             JMenu menuEdition = new JMenu("A propos");
             {
                 menuEdition.add(aide);
-                menuEdition.add(ouvrir_pop_up);
+                menuEdition.add(ouvrirPopUp);
             }
             menuBar.add(menuEdition);
         }
@@ -336,11 +338,10 @@ public class Main {
 
         try {
             //imgFond = ImageIO.read(new File("images/fond.jpg"));
-            //BufferedImage myPicture = ImageIO.read(new File("images/fond.jpg"));
-            BufferedImage myPicture = ImageIO.read(new File("images/test.jpg"));
-            JLabel picLabel = new JLabel(new ImageIcon(myPicture));
+            myPicture = ImageIO.read(new File("images/test.jpg"));
+            picLabel = new JLabel(new ImageIcon(myPicture));
             //menu1.add(picLabel);
-            frame.add(picLabel, BorderLayout.CENTER);
+            frame.add(picLabel);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -361,9 +362,15 @@ public class Main {
             }
         });
         
-        ouvrir_pop_up.addActionListener(new ActionListener() {
+        ouvrirPopUp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(frame, "Ceci est une pop up");
+            }
+        });
+
+        fermerImage.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                picLabel.setVisible(false);
             }
         });
 
