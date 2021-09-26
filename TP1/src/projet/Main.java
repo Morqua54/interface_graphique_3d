@@ -109,6 +109,7 @@ public class Main {
     //                                                                                                        // sliders
     private JLabel picLabel;
     private BufferedImage myPicture;
+    boolean displayImage = true;
 
     // CONSTRUCTEUR
     public Main() {
@@ -339,7 +340,19 @@ public class Main {
         try {
             //imgFond = ImageIO.read(new File("images/fond.jpg"));
             myPicture = ImageIO.read(new File("images/test.jpg"));
-            picLabel = new JLabel(new ImageIcon(myPicture));
+            //picLabel = new JLabel(new ImageIcon(myPicture));
+            JPanel picLabel = new JPanel() {
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    if(myPicture != null)
+                    {
+                    int x = (this.getWidth() - myPicture.getWidth(null))/2;
+                    int y = (this.getHeight() - myPicture.getHeight(null))/2;
+                    g.drawImage(myPicture, x, y, this);
+                    }
+                }
+            };
             //menu1.add(picLabel);
             frame.add(picLabel);
         } catch (IOException e) {
@@ -370,7 +383,8 @@ public class Main {
 
         fermerImage.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                picLabel.setVisible(false);
+                myPicture = null;
+                frame.repaint();
             }
         });
 
