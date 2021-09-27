@@ -134,10 +134,11 @@ public class Main {
     }
 
     // COMMANDES
-    public void display() {
+    public boolean display() {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        return true;
     }
 
     // // Impl mentation d'un noeud du graphe
@@ -229,7 +230,7 @@ public class Main {
     //     // afficherLeGraphLimogesComplet();
     // }
 
-    private void createView() {
+    private boolean createView() {
         frame = new JFrame("TP1 - 3D - Mathilde Nicolas");
         frame.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT));
         fermer = new JMenuItem("Fermer", new ImageIcon("images/fermer.jpg"));
@@ -268,9 +269,11 @@ public class Main {
         // sliderCoefLongNouvelleRoute.setPaintLabels(true);
         // sliderCoefLongNouvelleRoute.setBorder(BorderFactory.createTitledBorder("Longueure route : "));
         // sliderCoefLongNouvelleRoute.setPreferredSize(new Dimension(MENU_WIDTH - 40, 70));
+
+        return true;
     }
 
-    private void placeComponents() {
+    private boolean placeComponents() {
         JPanel menu1 = new JPanel();
         {
             menu1.setPreferredSize(new Dimension(MENU_WIDTH, MENU_HEIGHT));
@@ -372,6 +375,8 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return true;
     }
 
     private void createController() {
