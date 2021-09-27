@@ -42,7 +42,15 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
-import java.io.File;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+
+import java.awt.Point;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.Rectangle;
 
 // import org.apache.commons.collections15.Factory;
 // import org.apache.commons.collections15.Transformer;
@@ -110,9 +118,11 @@ public class Main {
     // private int coefLongNouvelleRouteInit;
     // private JSlider sliderNoeudRang, sliderArreteRang, sliderCoefNoeudProche, sliderCoefLongNouvelleRoute; // Les
     //                                                                                                        // sliders
-    private JLabel picLabel;
+    private JPanel picLabel;
     private BufferedImage myPicture;
-    boolean displayImage = true;
+    int x=0, y=0;
+    private Point pointDepart = new Point(x,y);
+
 
     // CONSTRUCTEUR
     public Main() {
@@ -226,7 +236,6 @@ public class Main {
         ouvrirPopUp = new JMenuItem("ouvrir une pop up", new ImageIcon("images/fermer.jpg"));
         ouvrirImage = new JMenuItem("ouvrir une image", new ImageIcon("images/fermer.jpg"));
         fermerImage = new JMenuItem("fermer une image", new ImageIcon("images/fermer.jpg"));
-        deplacerImage = new JMenuItem("deplacer une image", new ImageIcon("images/fermer.jpg"));
 
         // reconstruire = new JButton("Reconstruire");
 
@@ -327,7 +336,6 @@ public class Main {
             {
                 menuFichier.add(ouvrirImage);
                 menuFichier.add(fermerImage);
-                menuFichier.add(deplacerImage);
                 menuFichier.add(fermer);
             }
             menuBar.add(menuFichier);
@@ -344,15 +352,15 @@ public class Main {
             //imgFond = ImageIO.read(new File("images/fond.jpg"));
             myPicture = ImageIO.read(new File("images/test.jpg"));
             //picLabel = new JLabel(new ImageIcon(myPicture));
-            JPanel picLabel = new JPanel() {
+            picLabel = new JPanel() {
                 @Override
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
                     if(myPicture != null)
                     {
-                    int x = (this.getWidth() - myPicture.getWidth(null))/2;
-                    int y = (this.getHeight() - myPicture.getHeight(null))/2;
-                    g.drawImage(myPicture, x, y, this);
+                    //x = (this.getWidth() - myPicture.getWidth(null))/2;
+                    //y = (this.getHeight() - myPicture.getHeight(null))/2;
+                    g.drawImage(myPicture, (int)pointDepart.getX(), (int)pointDepart.getY(), this);
                     }
                 }
             };
@@ -394,6 +402,7 @@ public class Main {
         ouvrirImage.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser dialogue = new JFileChooser();
+                dialogue.setCurrentDirectory(new File(System.getProperty("user.home")+"/desktop"));
                 dialogue.showOpenDialog(null);
                 //System.out.println("Fichier choisi : " + dialogue.getSelectedFile());
                 try {
@@ -403,6 +412,19 @@ public class Main {
                 }
                 frame.repaint();
             }
+        });
+
+        picLabel.addMouseMotionListener(new MouseMotionAdapter() {
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (myPicture != null) {
+                    Point me = e.getPoint();
+                    pointDepart.translate((int)(me.getX() - pointDepart.getX()), (int)(me.getY() - pointDepart.getY()));
+                    picLabel.repaint();
+                }
+            }
+
         });
 
         // reconstruire.addActionListener(new ActionListener() {
