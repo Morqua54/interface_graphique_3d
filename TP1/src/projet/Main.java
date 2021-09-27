@@ -122,6 +122,7 @@ public class Main {
     private BufferedImage myPicture;
     int x=0, y=0;
     private Point pointDepart = new Point(x,y);
+    boolean deplacementImage = false;
 
 
     // CONSTRUCTEUR
@@ -236,6 +237,7 @@ public class Main {
         ouvrirPopUp = new JMenuItem("ouvrir une pop up", new ImageIcon("images/fermer.jpg"));
         ouvrirImage = new JMenuItem("ouvrir une image", new ImageIcon("images/fermer.jpg"));
         fermerImage = new JMenuItem("fermer une image", new ImageIcon("images/fermer.jpg"));
+        deplacerImage = new JMenuItem("deplacer une image", new ImageIcon("images/fermer.jpg"));
 
         // reconstruire = new JButton("Reconstruire");
 
@@ -336,6 +338,7 @@ public class Main {
             {
                 menuFichier.add(ouvrirImage);
                 menuFichier.add(fermerImage);
+                menuFichier.add(deplacerImage);
                 menuFichier.add(fermer);
             }
             menuBar.add(menuFichier);
@@ -414,14 +417,23 @@ public class Main {
             }
         });
 
+        deplacerImage.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                deplacementImage = !deplacementImage;
+            }
+        });
+
         picLabel.addMouseMotionListener(new MouseMotionAdapter() {
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (myPicture != null) {
-                    Point me = e.getPoint();
-                    pointDepart.translate((int)(me.getX() - pointDepart.getX()), (int)(me.getY() - pointDepart.getY()));
-                    picLabel.repaint();
+                if (deplacementImage)
+                {
+                    if (myPicture != null) {
+                        Point me = e.getPoint();
+                        pointDepart.translate((int)(me.getX() - pointDepart.getX()), (int)(me.getY() - pointDepart.getY()));
+                        picLabel.repaint();
+                    }
                 }
             }
 
