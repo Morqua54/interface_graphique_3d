@@ -1,0 +1,7 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "libs\\jogamp-all-platforms\\jar\\gluegen-rt.jar",
+        "libs\\jogamp-all-platforms\\jar\\jogl-all.jar"
+    ]
+}
