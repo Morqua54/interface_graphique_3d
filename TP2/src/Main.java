@@ -67,7 +67,7 @@ public class Main {
 
         // Set the OpenGL zone :
         GLCanvas canvas = new GLCanvas();
-        canvas.addGLEventListener(new Square());
+        canvas.addGLEventListener(new Cube());
         canvas.requestFocus();
         frame.add(canvas, BorderLayout.CENTER);
 

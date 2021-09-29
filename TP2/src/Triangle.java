@@ -6,10 +6,10 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 
-public class Square implements GLEventListener {
+public class Triangle implements GLEventListener {
     private float rotate;
 
-    public Square() {
+    public Triangle() {
         rotate = 0.0f;
     }
 
@@ -21,7 +21,7 @@ public class Square implements GLEventListener {
         gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
 
         // Set background default color :
-        gl.glClearColor(0.2f, 0.05f, 0.55f, 0.0f);
+        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glClearDepth(1.0f);
         gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glDepthFunc(GL.GL_LEQUAL);
@@ -60,13 +60,14 @@ public class Square implements GLEventListener {
         gl.glRotatef(rotate, 0.0f, 1.0f, 0.0f);
         gl.glRotatef(rotate, 0.0f, 0.0f, 1.0f);
 
-        // Draw a square :
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glColor3f(0.0f, 1.0f, 1.0f); // Set the color for the next drawing
-        gl.glVertex3f(-1.0f, 1.0f, 0.0f); // Set a point at top left
-        gl.glVertex3f(1.0f, 1.0f, 0.0f); // Set a point at top right
-        gl.glVertex3f(1.0f, -1.0f, 0.0f); // Set a point at bottom right
-        gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Set a point at bottom left
+        // Draw a triangle :
+        gl.glBegin(GL2.GL_TRIANGLES);
+        gl.glColor3f(1.0f, 0.0f, 0.0f); // Set the color for the next drawing
+        gl.glVertex3f(0.0f, 1.5f, 0.0f); // Set a point at top
+        gl.glColor3f(0.0f, 1.0f, 0.0f); // Set the color for the next drawing
+        gl.glVertex3f(1.5f, 0.0f, 0.0f); // Set a point at bottom right
+        gl.glColor3f(0.0f, 0.0f, 1.0f); // Set the color for the next drawing
+        gl.glVertex3f(-1.5f, 0.0f, 0.0f); // Set a point at bottom left
         gl.glEnd();
 
         // Increase rotation :
@@ -76,4 +77,5 @@ public class Square implements GLEventListener {
     @Override
     public void dispose(GLAutoDrawable gLDrawable) {
     }
+    
 }
