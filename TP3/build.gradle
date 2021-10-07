@@ -5,6 +5,8 @@ apply plugin: 'java'
 apply plugin: 'application'
 sourceSets.main.java.srcDirs = ["src/"]
 
+application {mainClass = 'tp3.HelloWorld'}
+
 repositories {
 	mavenCentral()
 }
