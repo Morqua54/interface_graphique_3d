@@ -54,12 +54,12 @@ public class Cube implements GLEventListener {
         gl.glLoadIdentity();
 
         // Apply a translation to the current position :
-        gl.glTranslatef(0.0f, 0.0f, -5.0f);
+        gl.glTranslatef(0.0f, 1.0f, -6.0f);
 
         // Apply a rotation to the current position :
         gl.glRotatef(rotate, 1.0f, 1.0f, 1.0f);
-        gl.glRotatef(rotate, 0.0f, 1.0f, 0.0f);
-        gl.glRotatef(rotate, 0.0f, 0.0f, 1.0f);
+        gl.glRotatef(rotate, 1.0f, 1.0f, 1.0f);
+        gl.glRotatef(rotate, 1.0f, 1.0f, 1.0f);
 
         // Draw a triangle :
         gl.glBegin(GL2.GL_QUADS);
@@ -92,11 +92,11 @@ public class Cube implements GLEventListener {
         gl.glVertex3f(1.0f, -1.0f, 0.0f); // Set a point at bottom right
         gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Set a point at bottom left
 
-        //conquième face
+        //cinquième face
         gl.glColor3f(0.5f, 0.5f, 0.0f); // Set the color for the next drawing
         gl.glVertex3f(-1.0f, 1.0f, 0.0f); // Set a point at top left
         gl.glVertex3f(-1.0f, 1.0f, -2.0f); // Set a point at top right
-        gl.glVertex3f(1.0f, -1.0f, -2.0f); // Set a point at bottom right
+        gl.glVertex3f(-1.0f, -1.0f, -2.0f); // Set a point at bottom right
         gl.glVertex3f(-1.0f, -1.0f, 0.0f); // Set a point at bottom left
 
         //sixième face
