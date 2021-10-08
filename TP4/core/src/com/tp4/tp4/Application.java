@@ -102,6 +102,10 @@ public class Application extends ApplicationAdapter {
                 iter.remove();
             }
         }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
+            dispose();
+
     }
 
     private void spawnRaindrop() {

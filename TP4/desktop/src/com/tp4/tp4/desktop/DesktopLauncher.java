@@ -11,7 +11,7 @@ public class DesktopLauncher {
         new Lwjgl3Application(new Application(), config);
         config.setTitle("Drop");
         config.setWindowedMode(800,480);
-        new Lwjgl3Application(new Application(), config);
+        //new Lwjgl3Application(new Application(), config);
     }
 
 }
