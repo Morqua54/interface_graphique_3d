@@ -88,6 +88,7 @@ public class HelloWorld {
 	}
 
 	private void loop() {
+
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
 		// LWJGL detects the context that is current in the current thread,
@@ -98,64 +99,95 @@ public class HelloWorld {
 		// Set the clear color
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-        glTranslatef(0.0f, 0.2f, -1.0f);
-        glRotatef(15, 1.0f, 1.0f, 1.0f);
-
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
+
+        // Set anti-aliazing :
+        glShadeModel(GL_SMOOTH);
+
+        // Set background default color :
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClearDepth(1.0f);
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LEQUAL);
+        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+
+        float rotate = 0.0f;
+
+        // Set frustum :
+        float fh = 0.5f;
+        float aspect = (float) 900 / (float) 900;
+        float fw = fh * aspect;
+        glFrustum(-fw, fw, -fh, fh, 1.0f, 1000.0f);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        
 		while ( !glfwWindowShouldClose(window) ) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+
+            glLoadIdentity();
+            glTranslatef(0.0f, 0.0f, -5.0f);
+            glRotatef(rotate, 1.0f, 0.0f, 0.0f);
+            glRotatef(rotate, 0.0f, 1.0f, 0.0f);
+            glRotatef(rotate, 0.0f, 0.0f, 1.0f);
 
             glBegin(GL_QUADS);
             //première face
             glColor3f(1.0f, 0.0f, 0.0f); // Set the color for the next drawing
-            glVertex3f(-1.0f, 1.0f, 0.0f); // Set a point at top left
-            glVertex3f(1.0f, 1.0f, 0.0f); // Set a point at top right
-            glVertex3f(1.0f, -1.0f, 0.0f); // Set a point at bottom right
-            glVertex3f(-1.0f, -1.0f, 0.0f); // Set a point at bottom left
+            glVertex3f(-1.0f, 1.0f, 1.0f); // Set a point at top left
+            glVertex3f(1.0f, 1.0f, 1.0f); // Set a point at top right
+            glVertex3f(1.0f, -1.0f, 1.0f); // Set a point at bottom right
+            glVertex3f(-1.0f, -1.0f, 1.0f); // Set a point at bottom left
 
             //deuxième face
             glColor3f(0.0f, 1.0f, 0.0f); // Set the color for the next drawing
-            glVertex3f(1.0f, 1.0f, 0.0f); // Set a point at top left
-            glVertex3f(1.0f, 1.0f, -2.0f); // Set a point at top right
-            glVertex3f(1.0f, -1.0f, -2.0f); // Set a point at bottom right
-            glVertex3f(1.0f, -1.0f, 0.0f); // Set a point at bottom left
+            glVertex3f(1.0f, 1.0f, 1.0f); // Set a point at top left
+            glVertex3f(1.0f, 1.0f, -1.0f); // Set a point at top right
+            glVertex3f(1.0f, -1.0f, -1.0f); // Set a point at bottom right
+            glVertex3f(1.0f, -1.0f, 1.0f); // Set a point at bottom left
 
             //troisième face
             glColor3f(0.0f, 0.0f, 1.0f); // Set the color for the next drawing
-            glVertex3f(-1.0f, 1.0f, -2.0f); // Set a point at top left
-            glVertex3f(1.0f, 1.0f, -2.0f); // Set a point at top right
-            glVertex3f(1.0f, 1.0f, 0.0f); // Set a point at bottom right
-            glVertex3f(-1.0f, 1.0f, 0.0f); // Set a point at bottom left
+            glVertex3f(-1.0f, 1.0f, -1.0f); // Set a point at top left
+            glVertex3f(1.0f, 1.0f, -1.0f); // Set a point at top right
+            glVertex3f(1.0f, 1.0f, 1.0f); // Set a point at bottom right
+            glVertex3f(-1.0f, 1.0f, 1.0f); // Set a point at bottom left
 
             //quatrième face
             glColor3f(0.5f, 0.0f, 0.5f); // Set the color for the next drawing
-            glVertex3f(-1.0f, -1.0f, -2.0f); // Set a point at top left
-            glVertex3f(1.0f, -1.0f, -2.0f); // Set a point at top right
-            glVertex3f(1.0f, -1.0f, 0.0f); // Set a point at bottom right
-            glVertex3f(-1.0f, -1.0f, 0.0f); // Set a point at bottom left
+            glVertex3f(-1.0f, -1.0f, -1.0f); // Set a point at top left
+            glVertex3f(1.0f, -1.0f, -1.0f); // Set a point at top right
+            glVertex3f(1.0f, -1.0f, 1.0f); // Set a point at bottom right
+            glVertex3f(-1.0f, -1.0f, 1.0f); // Set a point at bottom left
 
             //cinquième face
             glColor3f(0.5f, 0.5f, 0.0f); // Set the color for the next drawing
-            glVertex3f(-1.0f, 1.0f, 0.0f); // Set a point at top left
-            glVertex3f(-1.0f, 1.0f, -2.0f); // Set a point at top right
-            glVertex3f(-1.0f, -1.0f, -2.0f); // Set a point at bottom right
-            glVertex3f(-1.0f, -1.0f, 0.0f); // Set a point at bottom left
+            glVertex3f(-1.0f, 1.0f, 1.0f); // Set a point at top left
+            glVertex3f(-1.0f, 1.0f, -1.0f); // Set a point at top right
+            glVertex3f(-1.0f, -1.0f, -1.0f); // Set a point at bottom right
+            glVertex3f(-1.0f, -1.0f, 1.0f); // Set a point at bottom left
 
             //sixième face
             glColor3f(1.0f, 1.0f, 1.0f); // Set the color for the next drawing
-            glVertex3f(-1.0f, 1.0f, -2.0f); // Set a point at top left
-            glVertex3f(1.0f, 1.0f, -2.0f); // Set a point at top right
-            glVertex3f(1.0f, -1.0f, -2.0f); // Set a point at bottom right
-            glVertex3f(-1.0f, -1.0f, -2.0f); // Set a point at bottom left
+            glVertex3f(-1.0f, 1.0f, -1.0f); // Set a point at top left
+            glVertex3f(1.0f, 1.0f, -1.0f); // Set a point at top right
+            glVertex3f(1.0f, -1.0f, -1.0f); // Set a point at bottom right
+            glVertex3f(-1.0f, -1.0f, -1.0f); // Set a point at bottom left
             
             glEnd();
+            
+            rotate += 0.2f;
 
 			glfwSwapBuffers(window); // swap the color buffers
 
 			// Poll for window events. The key callback above will only be
 			// invoked during this call.
 			glfwPollEvents();
+
+
 		}
 
 	}
