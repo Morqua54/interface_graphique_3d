@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -30,6 +31,9 @@ public class Application extends ApplicationAdapter {
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
 
+        Scene scene = new Scene();
+        Ray ray = new Ray();
+
         // Create a camera with perspective view :
         camera = new PerspectiveCamera(50.0f, screenWidth, screenHeight);
         camera.position.set(0f, 0f, -10f);
@@ -48,6 +52,18 @@ public class Application extends ApplicationAdapter {
             for (int x = 0; x < screenWidth; x++) {
                 pixels.setColor(0.1f, 0.1f, 0.1f, 1f);
                 pixels.drawPixel(x, y);
+            }
+        }
+
+        //parcours pixel
+        //vers nous donc direction -1
+        for(int i = 0; i < pixels.getWidth(); i++)
+        {
+            for(int j = 0; j < pixels.getHeight(); j++)
+            {
+                Vector3 origin;
+                tmpVector3.set(i, j, 0);
+                origin = viewport.unproject(tmpVector3);
             }
         }
 
