@@ -9,11 +9,13 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.math.Intersector;
 
 public class Application extends ApplicationAdapter {
     private FitViewport viewport;
@@ -56,14 +58,27 @@ public class Application extends ApplicationAdapter {
         }
 
         //parcours pixel
-        //vers nous donc direction -1
         for(int i = 0; i < pixels.getWidth(); i++)
         {
             for(int j = 0; j < pixels.getHeight(); j++)
             {
-                Vector3 origin;
+                Vector3 origin= camera.position;
+
+                tmpVector3 = new Vector3();
                 tmpVector3.set(i, j, 0);
-                origin = viewport.unproject(tmpVector3);
+                Vector3 positionPixelScreen = viewport.unproject(tmpVector3);
+                //System.out.println(positionPixelScreen);
+                Vector3 direction = positionPixelScreen.sub(origin);
+
+                ray.set(origin, direction);
+
+                boolean verif;
+                verif = Intersector.intersectRaySphere(ray, scene.sphere.position, scene.sphere.raySphere, null);
+                if(verif)
+                {
+                    pixels.setColor(scene.sphere.color.x, scene.sphere.color.y, scene.sphere.color.z, 1f);
+                    pixels.drawPixel(i, j);
+                }
             }
         }
 
@@ -98,6 +113,8 @@ public class Application extends ApplicationAdapter {
 
         // Process pixels color :
         processPixel();
+
+        textureWithPixels.draw(pixels, 0, 0);
 
         // Render the texture with pixels :
         spriteBatch.begin();
