@@ -66,7 +66,7 @@ public class Application extends ApplicationAdapter {
 
                 tmpVector3 = new Vector3();
                 tmpVector3.set(i, j, 0);
-                Vector3 positionPixelScreen = viewport.unproject(tmpVector3);
+                Vector3 positionPixelScreen = camera.unproject(tmpVector3);
                 //System.out.println(positionPixelScreen);
                 Vector3 direction = positionPixelScreen.sub(origin);
 
