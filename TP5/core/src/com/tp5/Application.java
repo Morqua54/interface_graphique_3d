@@ -62,23 +62,28 @@ public class Application extends ApplicationAdapter {
         {
             for(int j = 0; j < pixels.getHeight(); j++)
             {
-                Vector3 origin= camera.position;
-
-                tmpVector3 = new Vector3();
-                tmpVector3.set(i, j, 0);
-                Vector3 positionPixelScreen = camera.unproject(tmpVector3);
-                //System.out.println(positionPixelScreen);
-                Vector3 direction = positionPixelScreen.sub(origin);
-
-                ray.set(origin, direction);
-
-                boolean verif;
-                verif = Intersector.intersectRaySphere(ray, scene.sphere.position, scene.sphere.raySphere, null);
-                if(verif)
+                Vector3 color = new Vector3(0,0,0);
+                for(int k = 0; k < scene.listSphere.size(); k++)
                 {
-                    pixels.setColor(scene.sphere.color.x, scene.sphere.color.y, scene.sphere.color.z, 1f);
-                    pixels.drawPixel(i, j);
+                    Vector3 origin= camera.position;
+
+                    tmpVector3 = new Vector3();
+                    tmpVector3.set(i, j, 0);
+                    Vector3 positionPixelScreen = camera.unproject(tmpVector3);
+                    //System.out.println(positionPixelScreen);
+                    Vector3 direction = positionPixelScreen.sub(origin);
+
+                    ray.set(origin, direction);
+
+                    boolean verif;
+                    verif = Intersector.intersectRaySphere(ray, scene.listSphere.get(k).position, scene.listSphere.get(k).raySphere, null);
+                    if(verif)
+                    {
+                        color.add(scene.listSphere.get(k).color.x, scene.listSphere.get(k).color.y, scene.listSphere.get(k).color.z);
+                    }
                 }
+                pixels.setColor(color.x, color.y, color.z, 1f);
+                pixels.drawPixel(i, j);
             }
         }
 
