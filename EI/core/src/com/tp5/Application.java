@@ -57,35 +57,62 @@ public class Application extends ApplicationAdapter {
             }
         }
 
-        //parcours pixel
+        // Calculate the minimal and maximal distance between the sphere and the Light
+        //using the function dst in the Vector3 class to have the distance between the light and the center of the sphere
+        float centerDistance = Vector3.dst(scene.light.position.x, scene.light.position.y, scene.light.position.z, scene.sphere.position.x, scene.sphere.position.y, scene.sphere.position.z);
+        
+        //We add the center of the sphere to have the maximal distance and we retire it to have the minimal distance with the light
+        float maximalDistance = centerDistance + scene.sphere.raySphere;
+        float minimalDistance = centerDistance - scene.sphere.raySphere;
+
+        //for each pixel we search for an intersection
         for(int i = 0; i < pixels.getWidth(); i++)
         {
             for(int j = 0; j < pixels.getHeight(); j++)
             {
-                Vector3 color = new Vector3(0,0,0);
-                for(int k = 0; k < scene.listSphere.size(); k++)
+                Vector3 origin= camera.position;
+
+                tmpVector3 = new Vector3();
+                tmpVector3.set(i, j, 0);
+                Vector3 positionPixelScreen = camera.unproject(tmpVector3);
+                Vector3 direction = positionPixelScreen.sub(origin);
+
+                ray.set(origin, direction);
+
+                boolean verif;
+                Vector3 intersection = new Vector3(0,0,0);
+                //if there is an intersection then the value of intersection will take the value of the coordonate intersection
+                verif = Intersector.intersectRaySphere(ray, scene.sphere.position, scene.sphere.raySphere, intersection);
+                if(verif)
                 {
-                    Vector3 origin= camera.position;
-
-                    tmpVector3 = new Vector3();
-                    tmpVector3.set(i, j, 0);
-                    Vector3 positionPixelScreen = camera.unproject(tmpVector3);
-                    //System.out.println(positionPixelScreen);
-                    Vector3 direction = positionPixelScreen.sub(origin);
-
-                    ray.set(origin, direction);
-
-                    boolean verif;
-                    verif = Intersector.intersectRaySphere(ray, scene.listSphere.get(k).position, scene.listSphere.get(k).raySphere, null);
-                    if(verif)
+                    //Calculate the distance between the light and the intersection
+                    float distanceLightIntersection = Vector3.dst(scene.light.position.x, scene.light.position.y, scene.light.position.z, intersection.x, intersection.y, intersection.z);
+                    float ratio;
+                    if(distanceLightIntersection == maximalDistance)
                     {
-                        //color.add(scene.listSphere.get(k).color.x, scene.listSphere.get(k).color.y, scene.listSphere.get(k).color.z);
-                        pixels.setColor(scene.listSphere.get(k).color.x, scene.listSphere.get(k).color.y, scene.listSphere.get(k).color.z, 1f);
-                        pixels.drawPixel(i, j);
+                        ratio = 0;
                     }
+
+                    else if(distanceLightIntersection == minimalDistance)
+                    {
+                        ratio = 1;
+                    }
+
+                    else
+                    {
+                        //with Start = 0, End = 1, Max = maximalDistance and Min = minimalDistance
+                        float v = 1/(maximalDistance - minimalDistance);
+                        float a = (1 + minimalDistance * v)/maximalDistance;
+                        float b = -minimalDistance * v;
+                        ratio = a * distanceLightIntersection + b;
+
+                    }
+
+                    //We applicate the ratio on the color
+                    pixels.setColor(scene.sphere.color.x*ratio, scene.sphere.color.y*ratio, scene.sphere.color.z*ratio, 1f);
+                    pixels.drawPixel(i, j);
                 }
-                //pixels.setColor(color.x, color.y, color.z, 1f);
-                //pixels.drawPixel(i, j);
+
             }
         }
 
