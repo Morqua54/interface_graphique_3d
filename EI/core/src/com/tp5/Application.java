@@ -26,6 +26,7 @@ public class Application extends ApplicationAdapter {
     private Vector2 currentScreen;
     private Vector3 currentScene;
     private Vector3 tmpVector3;
+    public Scene scene = new Scene();
 
     @Override
     public void create() {
@@ -33,7 +34,7 @@ public class Application extends ApplicationAdapter {
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
 
-        Scene scene = new Scene();
+        //Scene scene = new Scene();
         Ray ray = new Ray();
 
         // Create a camera with perspective view :
@@ -57,17 +58,22 @@ public class Application extends ApplicationAdapter {
             }
         }
 
-        // Calculate the minimal and maximal distance between the sphere and the Light
-        //using the function dst in the Vector3 class to have the distance between the light and the center of the sphere
-        float centerDistance = Vector3.dst(scene.light.position.x, scene.light.position.y, scene.light.position.z, scene.sphere.position.x, scene.sphere.position.y, scene.sphere.position.z);
-        
-        //We add the center of the sphere to have the maximal distance and we retire it to have the minimal distance with the light
-        float maximalDistance = centerDistance + scene.sphere.raySphere;
-        float minimalDistance = centerDistance - scene.sphere.raySphere;
-
         //for each pixel we search for an intersection
         for(int i = 0; i < pixels.getWidth(); i++)
         {
+            //we put all calculs here because the light will move here, in function of i
+
+            // Calculate the minimal and maximal distance between the sphere and the Light
+            //using the function dst in the Vector3 class to have the distance between the light and the center of the sphere
+            float centerDistance = Vector3.dst(scene.light.position.x, scene.light.position.y, scene.light.position.z, scene.sphere.position.x, scene.sphere.position.y, scene.sphere.position.z);
+            
+            //We add the center of the sphere to have the maximal distance and we retire it to have the minimal distance with the light
+            float maximalDistance = centerDistance + scene.sphere.raySphere;
+            float minimalDistance = centerDistance - scene.sphere.raySphere;
+
+            //Calculate the new position for the light... but it fails....
+            //scene.light.position.x = scene.light.position.x + 10;
+
             for(int j = 0; j < pixels.getHeight(); j++)
             {
                 Vector3 origin= camera.position;
@@ -144,6 +150,9 @@ public class Application extends ApplicationAdapter {
 
         // Reset the screen buffer colors :
         ScreenUtils.clear(0, 0, 0, 1);
+
+        //move the light but it didn't work...
+        //scene.light.position.x = scene.light.position.x + 10;
 
         // Process pixels color :
         processPixel();
