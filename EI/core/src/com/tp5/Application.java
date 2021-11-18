@@ -27,15 +27,13 @@ public class Application extends ApplicationAdapter {
     private Vector3 currentScene;
     private Vector3 tmpVector3;
     public Scene scene = new Scene();
+    public boolean directionAnimeLight;
 
     @Override
     public void create() {
         // Get screen dimensions, in pixels :
         int screenWidth = Gdx.graphics.getWidth();
         int screenHeight = Gdx.graphics.getHeight();
-
-        //Scene scene = new Scene();
-        Ray ray = new Ray();
 
         // Create a camera with perspective view :
         camera = new PerspectiveCamera(50.0f, screenWidth, screenHeight);
@@ -57,6 +55,75 @@ public class Application extends ApplicationAdapter {
                 pixels.drawPixel(x, y);
             }
         }
+
+        
+
+        // Add pixels in a Texture in order to render them :
+        spriteBatch = new SpriteBatch();
+        textureWithPixels = new Texture(pixels);
+
+        // Initialize coords of the first pixel, in screen space :
+        currentScreen = new Vector2(0, 0);
+
+        // Others initializations :
+        currentScene = new Vector3();
+        tmpVector3 = new Vector3();
+    }
+
+    @Override
+    public void render() {
+        // If "ctrl + s" is pressed :
+        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.S)) {
+            // Save the pixels into a png file :
+            savePixelsInPngFile();
+        }
+
+        // If "escape" is pressed :
+        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+            // Close th application :
+            Gdx.app.exit();
+        }
+
+        // Reset the screen buffer colors :
+        ScreenUtils.clear(0, 0, 0, 1);
+
+        //move the light but it didn't work...
+        //scene.light.position.x = scene.light.position.x + 10;
+
+        // Process pixels color :
+        processPixel();
+
+        textureWithPixels.draw(pixels, 0, 0);
+
+        // Render the texture with pixels :
+        spriteBatch.begin();
+        spriteBatch.draw(textureWithPixels, 0, 0);
+        spriteBatch.end();
+    }
+
+    @Override
+    public void dispose() {
+        spriteBatch.dispose();
+        textureWithPixels.dispose();
+        pixels.dispose();
+    }
+
+    /**
+     * Compute the color of each screen pixels and store the results in the pixels
+     * map.
+     */
+    private boolean processPixel() {
+        boolean isOk = true;
+
+        // Get color of current pixel :
+        Vector3 color = getColor((int) currentScreen.x, (int) currentScreen.y);
+
+        // Save color into pixels map :
+        pixels.setColor(color.x, color.y, color.z, 1f);
+        pixels.drawPixel((int) currentScreen.x, (int) currentScreen.y);
+
+        //Scene scene = new Scene();
+        Ray ray = new Ray();
 
         //for each pixel we search for an intersection
         for(int i = 0; i < pixels.getWidth(); i++)
@@ -122,69 +189,19 @@ public class Application extends ApplicationAdapter {
             }
         }
 
-        // Add pixels in a Texture in order to render them :
-        spriteBatch = new SpriteBatch();
-        textureWithPixels = new Texture(pixels);
-
-        // Initialize coords of the first pixel, in screen space :
-        currentScreen = new Vector2(0, 0);
-
-        // Others initializations :
-        currentScene = new Vector3();
-        tmpVector3 = new Vector3();
-    }
-
-    @Override
-    public void render() {
-        // If "ctrl + s" is pressed :
-        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.S)) {
-            // Save the pixels into a png file :
-            savePixelsInPngFile();
+        //scene.light.position.y += 0.5f*Gdx.graphics.getDeltaTime();
+        
+        if (directionAnimeLight) {
+            scene.light.position.y -= 20 * Gdx.graphics.getDeltaTime();
+            if (scene.light.position.y < -20.0f) {
+                directionAnimeLight = !directionAnimeLight;
+            }
+        } else {
+            scene.light.position.y += 20 * Gdx.graphics.getDeltaTime();
+            if (scene.light.position.y > 20.0f) {
+                directionAnimeLight = !directionAnimeLight;
+            }
         }
-
-        // If "escape" is pressed :
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
-            // Close th application :
-            Gdx.app.exit();
-        }
-
-        // Reset the screen buffer colors :
-        ScreenUtils.clear(0, 0, 0, 1);
-
-        //move the light but it didn't work...
-        //scene.light.position.x = scene.light.position.x + 10;
-
-        // Process pixels color :
-        processPixel();
-
-        textureWithPixels.draw(pixels, 0, 0);
-
-        // Render the texture with pixels :
-        spriteBatch.begin();
-        spriteBatch.draw(textureWithPixels, 0, 0);
-        spriteBatch.end();
-    }
-
-    @Override
-    public void dispose() {
-        spriteBatch.dispose();
-        textureWithPixels.dispose();
-        pixels.dispose();
-    }
-
-    /**
-     * Compute the color of each screen pixels and store the results in the pixels
-     * map.
-     */
-    private boolean processPixel() {
-        boolean isOk = true;
-
-        // Get color of current pixel :
-        Vector3 color = getColor((int) currentScreen.x, (int) currentScreen.y);
-
-        // Save color into pixels map :
-        pixels.setColor(color.x, color.y, color.z, 1f);
-        pixels.drawPixel((int) currentScreen.x, (int) currentScreen.y);
 
         return isOk;
     }
